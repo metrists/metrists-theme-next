@@ -1,20 +1,5 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
-
-
-const ThemeSwitch = () => {
-  const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === 'system' ? systemTheme : theme;
-
-  return (
-    <Button
-      onClick={() => theme == "dark" ? setTheme('light') : setTheme("dark")}
-    >
-      Toggle Mode
-    </Button>
-  )
-}
+import { ThemeSwitch } from "@/components/patterns/theme-switch";
 
 export default function Home() {
   return (
