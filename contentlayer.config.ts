@@ -52,5 +52,6 @@ export const Meta = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: contentDirectory,
   documentTypes: [Meta, Chapter],
+  //@ts-ignore
   markdown: { rehypePlugins: [highlight], remarkPlugins: [remarkGfm] },
 });

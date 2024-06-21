@@ -38,6 +38,7 @@ export default function Home({
                   {
                     label: "Start Reading",
                     action: `/${firstChapter.slug}`,
+                    buttonProps: {},
                   },
                 ]
               : []),

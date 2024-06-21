@@ -29,7 +29,7 @@ export function Sidebar({
         <div className="p-4 pb-0 col-span-7 m-auto w-full md:h-full md:col-span-5 md:p-8">
           {children}
           <div className="sticky z-10 w-full bottom-0 space-y-4 bg-background py-2 md:hidden">
-            <ChapterNavigation navigation={navigation} meta={meta}>
+            <ChapterNavigation navigation={navigation}>
               <Button
                 variant="secondary"
                 size="lg"
