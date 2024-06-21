@@ -1,29 +1,35 @@
-import { type ClassValue, clsx } from "clsx"
+import { type ClassValue, clsx } from "clsx";
 import { ChapterNavigationProps } from "@/components/patterns/chapter-navigation";
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
 import type { Meta } from ".contentlayer/generated";
 import type { Chapter } from ".contentlayer/generated";
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 import * as React from "react";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export type ChapterLike = Pick<Chapter, "slug" | "title" | "index">;
 
-export type ChapterNavigation = [ChapterLike | undefined, ChapterLike | undefined];
+export type ChapterNavigation = [
+  ChapterLike | undefined,
+  ChapterLike | undefined,
+];
 
 export function getChapterNavigation(
   currentChapter: ChapterLike | undefined,
-  chapters: ChapterLike[]
+  chapters: ChapterLike[],
 ): ChapterNavigationProps["navigation"] {
   const slug = currentChapter?.slug;
   const index = slug ? getSlugChapterIndex(slug, chapters) : -1;
-  return [chapters[index - 1], chapters[index + 1]];
+  return [chapters[index - 1] ?? null, chapters[index + 1] ?? null];
 }
 
-export function getSlugChapterIndex(slug: string, chapters: ChapterLike[]): number {
+export function getSlugChapterIndex(
+  slug: string,
+  chapters: ChapterLike[],
+): number {
   return chapters.findIndex((chapter: ChapterLike) => chapter.slug === slug);
 }
 
@@ -45,7 +51,7 @@ export function getSlugChapterIndex(slug: string, chapters: ChapterLike[]): numb
  */
 export function invariant(
   condition: any,
-  message: string | (() => string)
+  message: string | (() => string),
 ): asserts condition {
   if (!condition) {
     throw new Error(typeof message === "function" ? message() : message);
@@ -70,7 +76,7 @@ export function invariant(
 export function invariantResponse(
   condition: any,
   message: string | (() => string),
-  responseInit?: ResponseInit
+  responseInit?: ResponseInit,
 ): asserts condition {
   if (!condition) {
     throw new Response(typeof message === "function" ? message() : message, {
@@ -79,9 +85,6 @@ export function invariantResponse(
     });
   }
 }
-
-
-
 
 export interface ShareData {
   title: string;
@@ -92,7 +95,7 @@ export interface ShareData {
 export async function shareOrCopy(
   { title, url, text }: ShareData,
   onSuccess: (shareData: ShareData, method: "share" | "clipboard") => void,
-  onFail?: (shareData?: ShareData) => void
+  onFail?: (shareData?: ShareData) => void,
 ) {
   if (navigator.share) {
     await navigator.share({
@@ -111,7 +114,7 @@ export async function shareOrCopy(
 
 export function shareMetaCurry(
   toast: ReturnType<typeof useToast>["toast"],
-  meta: Meta
+  meta: Meta,
 ) {
   return async () => {
     await shareOrCopy(
@@ -132,34 +135,31 @@ export function shareMetaCurry(
           title: `Could not share`,
           description: `It seems like your browser does not support sharing or copying links.`,
         });
-      }
+      },
     );
   };
 }
 
+export function getRequestUrl(host: string | URL, route?: string) {
+  const hostString = typeof host === "string" ? host : host.toString();
+  const hostStringWithSchema = addSchemaToHost(hostString);
 
-export function getRequestUrl(host: string | URL , route?: string){
-    const hostString = typeof host === 'string' ? host : host.toString();
-    const hostStringWithSchema = addSchemaToHost(hostString);
-    
-    const url = new URL(route ?? '', hostStringWithSchema);
+  const url = new URL(route ?? "", hostStringWithSchema);
 
   return url.toString();
 }
 
-function addSchemaToHost(host: string){
-    if(host.startsWith('http://') || host.startsWith('https://')){
-        return host;
-    }
-    return `https://${host}`;
+function addSchemaToHost(host: string) {
+  if (host.startsWith("http://") || host.startsWith("https://")) {
+    return host;
+  }
+  return `https://${host}`;
 }
-
 
 export function useShare(meta: Parameters<typeof shareMetaCurry>[1]) {
   const { toast } = useToast();
   return shareMetaCurry(toast, meta);
 }
-
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -239,7 +239,7 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         toasts: state.toasts.map((t) =>
-          t.id === action.toast.id ? { ...t, ...action.toast } : t
+          t.id === action.toast.id ? { ...t, ...action.toast } : t,
         ),
       };
 
@@ -264,7 +264,7 @@ export const reducer = (state: State, action: Action): State => {
                 ...t,
                 open: false,
               }
-            : t
+            : t,
         ),
       };
     }
@@ -311,7 +311,7 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
-      onOpenChange: (open : any) => {
+      onOpenChange: (open: any) => {
         if (!open) dismiss();
       },
     },
@@ -345,4 +345,3 @@ function useToast() {
 }
 
 export { useToast, toast };
-

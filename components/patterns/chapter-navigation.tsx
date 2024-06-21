@@ -1,8 +1,9 @@
-import { Link } from "@remix-run/react";
+import Link from "next/link";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { ConditionallyWrap } from "./conditionally-wrap";
 import type { ChapterNavigation } from "@/lib/utils";
+
 export interface ChapterNavigationProps {
   navigation: ChapterNavigation;
   buttonProps?: Partial<ButtonProps>;
@@ -23,9 +24,8 @@ export function ChapterNavigation({
           condition={Boolean(previousChapter)}
           wrapper={Link}
           wrapperProps={{
-            to: `/${previousChapter?.slug}`,
+            href: `/${previousChapter?.slug}`,
             title: "Go to Previous Chapter",
-            prefetch: "render",
           }}
         >
           <Button
@@ -43,9 +43,8 @@ export function ChapterNavigation({
           condition={Boolean(nextChapter)}
           wrapper={Link}
           wrapperProps={{
-            to: `/${nextChapter?.slug}`,
+            href: `/${nextChapter?.slug}`,
             title: "Go to Next Chapter",
-            prefetch: "render",
           }}
         >
           <Button

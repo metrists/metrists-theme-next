@@ -1,10 +1,5 @@
-import {
-  MouseEventHandler,
-  useMemo,
-  type ReactElement,
-  type ReactNode,
-} from "react";
-import { Link, LinkProps } from "@remix-run/react";
+import { MouseEventHandler, useMemo, type ReactNode } from "react";
+import Link, { type LinkProps } from "next/link";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { TwoToneImage, TwoToneImageProps } from "./two-tone-image";
 import { cn } from "@/lib/utils";
@@ -60,7 +55,7 @@ export function BookOverview({
       month: "long",
       day: "numeric",
     });
-  });
+  }, [datePublished]);
 
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -93,7 +88,7 @@ export function BookOverview({
             typeof action === "string" ? (
               <Link
                 key={`book-overview-action-${action}`}
-                to={action}
+                href={action}
                 {...linkProps}
               >
                 <Button {...buttonProps}>{label}</Button>

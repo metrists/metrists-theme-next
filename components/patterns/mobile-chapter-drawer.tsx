@@ -1,28 +1,24 @@
-
-import { Link } from "@remix-run/react";
-import {
-  ListIcon,
-} from "lucide-react";
-import { Button } from "~/components/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@components/ui/drawer";
+import Link from "next/link";
+import { ListIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import type { Chapter } from ".contentlayer/generated";
-import type {
-  ChapterLike,
-} from "~/utils/chapter-navigation.server";
+import type { ChapterLike } from "@/lib/utils";
 
 export interface ChapterNavigationProps {
   currentChapter: ChapterLike | undefined;
   chapters: Chapter[];
 }
 
-export function MobileChapterDrawer({ currentChapter, chapters }: ChapterNavigationProps) {
+export function MobileChapterDrawer({
+  currentChapter,
+  chapters,
+}: ChapterNavigationProps) {
   return (
     <Drawer
-      onOpenChange={(open) => {
+      onOpenChange={(open: boolean) => {
         if (!open) {
-          document
-            .querySelector("body")
-            ?.removeAttribute("data-scroll-locked");
+          document.querySelector("body")?.removeAttribute("data-scroll-locked");
         }
       }}
     >
@@ -41,11 +37,7 @@ export function MobileChapterDrawer({ currentChapter, chapters }: ChapterNavigat
           <ul>
             {chapters.map((chapter) => (
               <li key={`mobile_chapters_${chapter.slug}_mobile`}>
-                <Link
-                  to={`/${chapter.slug}`}
-                  prefetch="render"
-                  className="block"
-                >
+                <Link href={`/${chapter.slug}`} className="block">
                   <Button
                     variant={
                       currentChapter?.slug === chapter.slug
@@ -64,5 +56,5 @@ export function MobileChapterDrawer({ currentChapter, chapters }: ChapterNavigat
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
